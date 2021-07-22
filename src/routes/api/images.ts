@@ -25,10 +25,10 @@ imagesRouter.get('/api/images', async (req, res) => {
             `${filename}_thumb_${width}_${height}.jpg`
         )
 
-        await fs.access(resizedFilePath, fs.constants.F_OK, err => {
-            if (err) {
+        fs.access(resizedFilePath, fs.constants.F_OK, async accessErr => {
+            if (accessErr) {
                 console.log('File does not exists. Creating new file.')
-                sharp(path.join(imageFolder, `${filename}.jpg`))
+                await sharp(path.join(imageFolder, `${filename}.jpg`))
                     .resize(width, height, {
                         fit: 'fill',
                     })
@@ -40,6 +40,9 @@ imagesRouter.get('/api/images', async (req, res) => {
                     )
                     .then(() => {
                         res.sendFile(resizedFilePath)
+                    })
+                    .catch(sharpErr => {
+                        console.log(sharpErr)
                     })
             } else {
                 console.log('File does exists. Sending file.')
