@@ -74,3 +74,6 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# Generated Asset Thumb Images
+assets/thumb/*

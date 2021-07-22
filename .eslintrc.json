@@ -22,7 +22,8 @@
                 "jsx": "never"
             }
         ],
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "radix": "off"
     },
     "settings": {
         "import/resolver": {
