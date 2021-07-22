@@ -1,40 +1,49 @@
 import express from 'express'
 import sharp from 'sharp'
 import fs from 'fs'
+import path from 'path'
 
-const root =
-    '/Users/crtaylor123/Development/Projects/Udacity/Image Processing API'
-const imageFolder = 'assets/full'
-const thumbFolder = 'assets/thumb'
+const root = path.join(__dirname, '..', '..', '..')
+const imageFolder = path.join('assets', 'full')
+const thumbFolder = path.join('assets', 'thumb')
 const imagesRouter = express.Router()
 
-imagesRouter.get('/api/images', (req, res) => {
-    //Check that all params are there
+imagesRouter.get('/api/images', async (req, res) => {
+    // Check that all params are there
     if (Object.keys(req.query).length < 3) {
         res.send(
             'Please include all three: filename, width, and height in your url.'
         )
     } else {
-        const filename: string = `${imageFolder}/${req.query.filename}.jpg` as string
+        const { filename } = req.query
         const width: number = parseInt(req.query.width as string) as number
         const height: number = parseInt(req.query.height as string) as number
 
-        const filePath = `${root}/${thumbFolder}/${req.query.filename}_thumb_${width}_${height}.jpg`
+        const resizedFilePath: string = path.join(
+            root,
+            thumbFolder,
+            `${filename}_thumb_${width}_${height}.jpg`
+        )
 
-        fs.access(filePath, fs.constants.F_OK, err => {
+        await fs.access(resizedFilePath, fs.constants.F_OK, err => {
             if (err) {
                 console.log('File does not exists. Creating new file.')
-                sharp(filename)
-                    .resize({ width: width, height: height })
+                sharp(path.join(imageFolder, `${filename}.jpg`))
+                    .resize(width, height, {
+                        fit: 'fill',
+                    })
                     .toFile(
-                        `${thumbFolder}/${req.query.filename}_thumb_${width}_${height}.jpg`
+                        path.join(
+                            thumbFolder,
+                            `${filename}_thumb_${width}_${height}.jpg`
+                        )
                     )
-                    .then(function() {
-                        res.sendFile(filePath)
+                    .then(() => {
+                        res.sendFile(resizedFilePath)
                     })
             } else {
                 console.log('File does exists. Sending file.')
-                res.sendFile(filePath)
+                res.sendFile(resizedFilePath)
             }
         })
     }
