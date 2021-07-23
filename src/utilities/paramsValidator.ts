@@ -1,10 +1,6 @@
-import express from 'express'
+import { Request, Response, NextFunction } from 'express'
 
-const validator = (
-    req: express.Request,
-    res: express.Response,
-    next: Function
-): void => {
+const validator = (req: Request, res: Response, next: NextFunction): void => {
     if (
         'filename' in req.query &&
         'width' in req.query &&
