@@ -32,7 +32,7 @@ describe('Return resized images', () => {
         spyOn(console, 'log')
         await request.get('/api/images?filename=fjord&width=200&height=200')
         expect(console.log).toHaveBeenCalledWith(
-            'File does exists. Sending file.'
+            'File does exist. Sending file.'
         )
     })
 
