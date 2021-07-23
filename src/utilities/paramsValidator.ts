@@ -5,13 +5,11 @@ const validator = (
     res: express.Response,
     next: Function
 ): void => {
-    console.log('filename' in req.query)
     if (
         'filename' in req.query &&
         'width' in req.query &&
         'height' in req.query
     ) {
-        console.log('Validation Passed.')
         next()
     } else {
         res.send(
