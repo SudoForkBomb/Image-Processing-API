@@ -29,7 +29,7 @@ imagesRouter.get(
             fs.constants.F_OK,
             async (accessErr: NodeJS.ErrnoException | null): Promise<void> => {
                 if (accessErr) {
-                    console.log('File does not exists. Creating new file.')
+                    console.log('File does not exist. Creating new file.')
                     await sharp(path.join(imageFolder, `${filename}.jpg`))
                         .resize(width, height, {
                             fit: 'fill',
@@ -53,7 +53,7 @@ imagesRouter.get(
                             }
                         })
                 } else {
-                    console.log('File does exists. Sending file.')
+                    console.log('File does exist. Sending file.')
                     res.sendFile(resizedFilePath)
                 }
             }
