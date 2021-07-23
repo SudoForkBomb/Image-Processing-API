@@ -7,7 +7,7 @@ const request = supertest(app)
 
 describe('Return resized images', () => {
     const root = path.join(__dirname, '..', '..', '..', '..')
-    const thumbFolder = path.join('src', 'tests', 'mock', 'thumb')
+    const thumbFolder = path.join('assets', 'thumb')
     const filename = 'fjord_thumb_200_200.jpg'
 
     beforeEach(() => {
@@ -28,13 +28,7 @@ describe('Return resized images', () => {
     })
 
     it('return image already in assets/thumb', async () => {
-        fs.appendFile(
-            filename,
-            '',
-            (err: NodeJS.ErrnoException | null): void => {
-                if (err) throw err
-            }
-        )
+        fs.writeFileSync(path.join(root, thumbFolder, filename), '')
         spyOn(console, 'log')
         await request.get('/api/images?filename=fjord&width=200&height=200')
         expect(console.log).toHaveBeenCalledWith(
@@ -49,9 +43,5 @@ describe('Return resized images', () => {
         expect(response.text).toBe(
             'Please include all three in your url: filename, width, and height.'
         )
-    })
-
-    afterAll(() => {
-        fs.unlinkSync(path.join(root, thumbFolder, filename))
     })
 })
