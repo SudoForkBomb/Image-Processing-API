@@ -13,7 +13,7 @@ const validator = (
         next()
     } else {
         res.send(
-            'Please include all three, filename, width, and height, in your url.'
+            'Please include all three in your url: filename, width, and height.'
         )
     }
 }

@@ -38,7 +38,9 @@ imagesRouter.get('/api/images', validator, async (req, res) => {
                     res.sendFile(resizedFilePath)
                 })
                 .catch(sharpErr => {
-                    return sharpErr
+                    res.send(
+                        `There was an error generating the image. Make sure it exists in the assets/full folder and is a jpg. {${sharpErr}:}`
+                    )
                 })
         } else {
             console.log('File does exists. Sending file.')
