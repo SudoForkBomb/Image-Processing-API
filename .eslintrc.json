@@ -23,7 +23,8 @@
             }
         ],
         "prettier/prettier": "error",
-        "radix": "off"
+        "radix": "off",
+        "no-console": "off"
     },
     "settings": {
         "import/resolver": {
