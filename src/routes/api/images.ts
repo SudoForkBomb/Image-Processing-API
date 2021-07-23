@@ -3,6 +3,7 @@ import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
 import validator from '../../utilities/paramsValidator'
+import { join } from 'path/posix'
 
 const root = path.join(__dirname, '..', '..', '..')
 const imageFolder = path.join('assets', 'full')
@@ -30,6 +31,9 @@ imagesRouter.get(
             async (accessErr: NodeJS.ErrnoException | null): Promise<void> => {
                 if (accessErr) {
                     console.log('File does not exist. Creating new file.')
+                    if (!fs.existsSync(path.join(root, thumbFolder))) {
+                        fs.mkdirSync(path.join(root, thumbFolder))
+                    }
                     await sharp(path.join(imageFolder, `${filename}.jpg`))
                         .resize(width, height, {
                             fit: 'fill',
