@@ -3,7 +3,6 @@ import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
 import validator from '../../utilities/paramsValidator'
-import { join } from 'path/posix'
 
 const root = path.join(__dirname, '..', '..', '..')
 const imageFolder = path.join('assets', 'full')
